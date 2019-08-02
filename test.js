@@ -11,7 +11,7 @@ var registrationData = {
 	userName: "username",
 	password: "password",
 	age: 25,
-	acceptedTerms: "    "
+	acceptedTerms: "false"
 }
 
 formValidatorNode(registrationForm,registrationData,{}).then(data=>{
