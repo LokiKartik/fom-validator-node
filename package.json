@@ -1,0 +1,22 @@
+{
+  "name": "form-validator-node",
+  "version": "1.0.7",
+  "description": "A simple node module for handling form validations.",
+  "main": "validator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://_Lokesh@bitbucket.org/_Lokesh/validator.git"
+  },
+  "keywords": [
+    "node-validator",
+    "form-validator",
+    "object-validator",
+    "validator"
+  ],
+  "author": "Lokesh N",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/_Lokesh/validator#readme"
+}
