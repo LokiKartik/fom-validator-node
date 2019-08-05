@@ -72,6 +72,11 @@ var ValidateConstraints = function (validationObject) {
                 }
                 if (key === 'pattern') {
                     try {
+                        if(validationObject[field][key].startsWith("/") && validationObject[field][key].endsWith("/"))
+                        {
+                            validationObject[field][key] = validationObject[field][key].slice(1);
+                            validationObject[field][key] = validationObject[field][key].slice(0,-1);
+                        }
                         let regex = new RegExp(validationObject[field][key]);
                         console.log("valid pattern", regex)
                     } catch (e) {
@@ -279,6 +284,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
     }
     if (validations.pattern) {
         let pattern = new RegExp(validations.pattern);
+        console.log("pattern iss ",pattern, fieldValue, pattern.test(fieldValue));
         if (!pattern.test(fieldValue)) {
             errorObject = {
                 field: fieldName,
@@ -287,6 +293,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
             return errorObject;
 
         }
+        
     }
 }
 var GetKeyValue = function (obj, keyString) {

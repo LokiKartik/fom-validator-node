@@ -32,17 +32,19 @@ $ npm install form-validator-node
 
 ### Available Validations
 
- required:  true
+&nbsp;&nbsp;&nbsp;&nbsp; required:  true
 
- type: &lt;string|number|boolean|list>
+&nbsp;&nbsp;&nbsp;&nbsp; type: &lt;string|number|boolean|list>
 
- minvalue: &lt;number>
+&nbsp;&nbsp;&nbsp;&nbsp; minvalue: &lt;number>
 
- maxvalue: &lt;number>
+&nbsp;&nbsp;&nbsp;&nbsp; maxvalue: &lt;number>
 
- minlength: &lt;number>
+&nbsp;&nbsp;&nbsp;&nbsp; minlength: &lt;number>
  
- maxlength: &lt;number>
+&nbsp;&nbsp;&nbsp;&nbsp; maxlength: &lt;number>
+
+&nbsp;&nbsp;&nbsp;&nbsp; pattern: &lt;regex>
 
 #### Example
 
@@ -51,7 +53,7 @@ $ npm install form-validator-node
 var validator = require("form-validator-node")
 
 var registrationForm = {
-userName : "required: true | minlength: 4 | maxlength:20 | type: string",
+userName : "required: true | pattern:/^[A-Za-z0-9]*$/ | minlength: 4 | maxlength:20 | type: string",
 password: "required: true | minlength:4 | maxlength:30 | type: string",
 age: "minvalue:13 | maxvalue:65 | type: number",
 acceptedTerms: "type: boolean"
