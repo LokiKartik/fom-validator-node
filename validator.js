@@ -48,41 +48,39 @@ var ValidateConstraints = function (validationObject) {
             if (validConstraints[key]) {
                 // console.log("constrint iss ", typeof validationObject[field][key]);
                 if (["minlength", "maxlength", "minvalue", "maxvalue", "length"].indexOf(key) >= 0) {
-                    if (isNaN(validationObject[field][key])) {
+                    if (isNaN(validationObject[field][key].value)) {
                         if (!errorObj[field]) {
                             errorObj[field] = [];
                         }
                         errorObj[field].push({
                             key: key,
-                            message: "Invalid value " + validationObject[field][key]
+                            message: "Invalid value " + validationObject[field][key].value
                         })
                     }
                 }
                 if (key === 'required') {
-
-                    if (["true", "false"].indexOf(validationObject[field][key]) < 0) {
+                    if (["true", "false"].indexOf(validationObject[field][key].value) < 0) {
                         if (!errorObj[field]) {
                             errorObj[field] = [];
                         }
                         errorObj[field].push({
                             key: key,
-                            message: "Invalid value " + validationObject[field][key]
+                            message: "Invalid value " + validationObject[field][key].value
                         })
                     }
                 }
                 if (key === 'pattern') {
                     try {
-                        if(validationObject[field][key].startsWith("/") && validationObject[field][key].endsWith("/"))
+                        if(validationObject[field][key].value.startsWith("/") && validationObject[field][key].value.endsWith("/"))
                         {
-                            validationObject[field][key] = validationObject[field][key].slice(1);
-                            validationObject[field][key] = validationObject[field][key].slice(0,-1);
+                            validationObject[field][key].value = validationObject[field][key].value.slice(1);
+                            validationObject[field][key].value = validationObject[field][key].value.slice(0,-1);
                         }
-                        let regex = new RegExp(validationObject[field][key]);
-                        console.log("valid pattern", regex)
+                        let regex = new RegExp(validationObject[field][key].value);
                     } catch (e) {
                         errorObj[field].push({
                             key: key,
-                            message: "Invalid pattern " + validationObject[field][key]
+                            message: "Invalid pattern " + validationObject[field][key].value
                         })
                     }
                 }
@@ -107,6 +105,7 @@ var CreateValidationObject = function (abstractValidationObj) {
         // abstractValidationObj[field].split("|")
         transformedObject[field] = FiledValidationGenerator(field, abstractValidationObj);
     }
+    console.log("transformedObject ", transformedObject);
     return transformedObject;
     // console.log("transformed object ", transformedObject);
 }
@@ -122,7 +121,14 @@ var FiledValidationGenerator = function (fieldName, abstractValidationObj) {
         let entry = constraint.split(":").map(elm => {
             return elm.trim()
         });
-        filedValidations[entry[0]] = entry[1];
+        filedValidations[entry[0]] ={
+            value: entry[1]
+        };
+        if(entry[2])
+        {
+            filedValidations[entry[0]].errorMessage = entry[2];
+        }
+            
     }
     // console.log(filedValidations);
     return filedValidations;
@@ -188,11 +194,10 @@ var TrimUnknownFields = function (validationObject, dataToValidate) {
 var ValidateField = function (fieldName, validationObject, dataToValidate) {
     let errorObject = {};
     let fieldValue = GetKeyValue(dataToValidate, fieldName);
-    // console.log("fieldvalue iss ", fieldName, dataToValidate.nestedobj.f1, fieldValue);
+    // console.log("fieldvalue iss ", fieldValue);
     let validations = validationObject[fieldName];
     // console.log("insie validateField ", fieldName, validationObject[fieldName].required)
     if (validations.required) {
-        // console.log("requiredd ", validations.required,fieldValue.length, !fieldValue,fieldValue!==0 );
         if (!fieldValue && fieldValue!==0) {
             errorObject = {
                 field: fieldName,
@@ -206,21 +211,21 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         return null;
     if (validations.type) {
         // console.log("typeof fieldValue ", typeof fieldValue);
-        if(validations.type == "list")
+        if(validations.type.value == "list")
         {
             if(fieldValue.constructor !=Array)
             {
                 errorObject = {
                     field: fieldName,
-                    message: fieldName + " should be " + validations.type
+                    message: fieldName + " should be " + validations.type.value
                 };
                 return errorObject;
             }
         }
-        else if (typeof fieldValue != validations.type) {
+        else if (typeof fieldValue != validations.type.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be " + validations.type
+                message: fieldName + " should be " + validations.type.value
             };
             return errorObject;
 
@@ -228,10 +233,10 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
     }
     if (validations.minlength) {
         // console.log("fieldValue.length ",fieldValue.length,validations.minlength,fieldName, fieldValue.length < validations.minlength)
-        if (fieldValue.length < validations.minlength) {
+        if (fieldValue.length < validations.minlength.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be minimum " + validations.minlength + " characters"
+                message: fieldName + " should be minimum " + validations.minlength.value + " characters"
             };
             // console.log("minlength error ", fieldName)
             return errorObject;
@@ -240,10 +245,10 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
     }
     if (validations.maxlength) {
 
-        if (fieldValue.length > validations.maxlength) {
+        if (fieldValue.length > validations.maxlength.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + "length should not exceed " + validations.maxlength + " characters"
+                message: fieldName + "length should not exceed " + validations.maxlength.value + " characters"
             };
             return errorObject;
 
@@ -251,10 +256,10 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
     }
     if (validations.length) {
         let fieldValue = fieldValue + "";
-        if (fieldValue.length != validations.length) {
+        if (fieldValue.length != validations.length.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be " + validations.length + " characters length."
+                message: fieldName + " should be " + validations.length.value + " characters length."
             };
             return errorObject;
 
@@ -262,29 +267,28 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
     }
     if (validations.maxvalue) {
         // console.log("fieldvalue before parse int ", fieldValue);
-        if (fieldValue > validations.maxvalue) {
+        if (fieldValue > validations.maxvalue.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " value should not exceed " + validations.maxvalue
+                message: fieldName + " value should not exceed " + validations.maxvalue.value
             };
             return errorObject;
 
         }
     }
     if (validations.minvalue) {
-        if (fieldValue < validations.minvalue) {
+        if (fieldValue < validations.minvalue.value) {
 
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be greater than " + validations.minvalue
+                message: fieldName + " should be greater than " + validations.minvalue.value
             };
             return errorObject;
 
         }
     }
     if (validations.pattern) {
-        let pattern = new RegExp(validations.pattern);
-        console.log("pattern iss ",pattern, fieldValue, pattern.test(fieldValue));
+        let pattern = new RegExp(validations.pattern.value);
         if (!pattern.test(fieldValue)) {
             errorObject = {
                 field: fieldName,
@@ -299,7 +303,6 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
 var GetKeyValue = function (obj, keyString) {
     obj = Object.assign({}, obj);
     keys = keyString.split(".");
-    // console.log(keys, obj)
     for (let key of keys) {
         if (obj[key] == undefined)
             return null;
