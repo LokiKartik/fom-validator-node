@@ -46,9 +46,7 @@ $ npm install form-validator-node
 &nbsp;&nbsp;&nbsp;&nbsp; pattern: &lt;regex>: &lt;optional error message>
 
 #### Example
-
 ```sh
-
 var validator = require("form-validator-node")
 
 var registrationForm = {
@@ -57,8 +55,6 @@ password: "required: true | minlength:4 | maxlength:30 | type: string",
 age: "minvalue:13 | maxvalue:65 | type: number: Age should be a number" ,
 acceptedTerms: "type: boolean"
 }
-
-
 var registrationData = {
 userName: "username",
 password: "password",
@@ -67,17 +63,11 @@ acceptedTerms: true
 }
 
 /*In callback way:: */
-
 validator(registrationForm,registrationData,{},function(error, verifiedData){
-
 })
-
 /*With promises:*/
-
 validator(registrationForm,registrationData,{}).then(verifiedData=>{
-
 }).catch(validationError => {
-
 })
 
 ```
