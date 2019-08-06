@@ -201,7 +201,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         if (!fieldValue && fieldValue!==0) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " is required"
+                message: validations.required.errorMessage?validations.required.errorMessage:fieldName + " is required"
             };
             return errorObject;
         }
@@ -217,7 +217,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
             {
                 errorObject = {
                     field: fieldName,
-                    message: fieldName + " should be " + validations.type.value
+                    message: validations.type.errorMessage?validations.type.errorMessage:fieldName + " should be " + validations.type.value
                 };
                 return errorObject;
             }
@@ -225,7 +225,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         else if (typeof fieldValue != validations.type.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be " + validations.type.value
+                message: validations.type.errorMessage?validations.type.errorMessage:fieldName + " should be " + validations.type.value
             };
             return errorObject;
 
@@ -236,7 +236,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         if (fieldValue.length < validations.minlength.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be minimum " + validations.minlength.value + " characters"
+                message: validations.minlength.errorMessage?validations.minlength.errorMessage:fieldName + " should be minimum " + validations.minlength.value + " characters"
             };
             // console.log("minlength error ", fieldName)
             return errorObject;
@@ -248,7 +248,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         if (fieldValue.length > validations.maxlength.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + "length should not exceed " + validations.maxlength.value + " characters"
+                message: validations.maxlength.errorMessage?validations.maxlength.errorMessage:fieldName + "length should not exceed " + validations.maxlength.value + " characters"
             };
             return errorObject;
 
@@ -259,7 +259,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         if (fieldValue.length != validations.length.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be " + validations.length.value + " characters length."
+                message: validations.length.errorMessage?validations.length.errorMessage:fieldName + " should be " + validations.length.value + " characters length."
             };
             return errorObject;
 
@@ -270,7 +270,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         if (fieldValue > validations.maxvalue.value) {
             errorObject = {
                 field: fieldName,
-                message: fieldName + " value should not exceed " + validations.maxvalue.value
+                message: validations.maxvalue.errorMessage?validations.maxvalue.errorMessage:fieldName + " value should not exceed " + validations.maxvalue.value
             };
             return errorObject;
 
@@ -281,7 +281,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
 
             errorObject = {
                 field: fieldName,
-                message: fieldName + " should be greater than " + validations.minvalue.value
+                message: validations.minvalue.errorMessage?validations.minvalue.errorMessage:fieldName + " should be greater than " + validations.minvalue.value
             };
             return errorObject;
 
@@ -292,7 +292,7 @@ var ValidateField = function (fieldName, validationObject, dataToValidate) {
         if (!pattern.test(fieldValue)) {
             errorObject = {
                 field: fieldName,
-                message: "Invalid  " + fieldName
+                message: validations.pattern.errorMessage?validations.pattern.errorMessage:"Invalid  " + fieldName
             };
             return errorObject;
 
