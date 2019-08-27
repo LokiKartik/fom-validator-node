@@ -1,4 +1,8 @@
 
+A simple [node](http://nodejs.org) module for validating request parameters and objects.
+
+This module supports custom error mesages
+
 ### Installation
 
 ```sh
@@ -9,65 +13,118 @@ $ npm install form-validator-node
 
 ### Usage
 
-  ```sh
-	var validator = require("form-validator-node")
-	var formValidations = {
-		fieldName1: condition1: value: errorMessage(optional) | condition2: value: errorMessage(optional)
-	}
-	var options = {
-		returnAllFields: true | false
-	}
-	validator(formValidations, formData,options,function(error, verifiedData){
-		//handle errors  
+
+A simple example showing object validation.
+```sh
+	var validator = require("form-validator-node");
+
+		var userInfoValidations = {
+			firstName: "type: string | required:true | minlenght:3 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
+			lastName: "type: string | minlenght:1 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
+			userName: "type: string | required:true | minlength:6 | maxlength:30 | pattern:/^[A-Za-z0-9_]*$/",
+			age: "required:true | type:number | minvalue:13 | maxvalue:70",
+		}
+		var options = {};
+		validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
+			if(validationErrors)
+			{
+				console.log(validationErrors);
+			}
+		})
+	
+```
+ 
+A simple express example showing login form validation.
+
+ ```sh
+	var validator = require("form-validator-node");
+
+	app.post("/login",function(req,res){
+		var loginFormValidations = {
+			userName: "required:true | minlength:6 | maxlength:30",
+			password: "minlength:6 | maxlength:50"
+		}
+		var options = {};
+		validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
+			if(validationErrors)
+			{
+				res.send(400).send(validationErrors);
+			}
+		})
+	})
+```
+
+
+
+A simple express example showing login form validation using promises.
+
+ ```sh
+	var validator = require("form-validator-node");
+
+	app.post("/login",function(req,res){
+		var loginFormValidations = {
+			userName: "required:true | minlength:6 | maxlength:30",
+			password: "minlength:6 | maxlength:50"
+		}
+		var options = {};
+
+		validator(loginFormValidations,req.body,options).then(verifiedData=>{
+			console.log(verifiedData);
+		}).catch(validationErrorS => {
+			res.send(400).send(validationErrors);
+		})
+
+	})
+```
+
+
+A simple express example showing login form validation with custom error messages.
+
+ ```sh
+	var validator = require("form-validator-node");
+
+	app.post("/login",function(req,res){
+		var loginFormValidations = {
+			userName: "required:true:Username is a mandatory field, Please fill out the field. | 
+			minlength:6:userName length should be atleast 6 characters. | 
+			maxlength:30:userName lenght exceeds 30 characters.",
+			password: "minlength:6 | maxlength:50"
+		}
+		var options = { deleteOtherFields : true };  // Options object will be explained in below sections.
+		validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
+			if(validationErrors)
+			{
+				res.send(400).send(validationErrors);
+			}
+		})
 	})
 ```
 
 ### Options
 
-##### returnAllFields 
-
-  Returns only fields in validation object if "returnAllFields" value is false. Else returns all fields. Default value is true. 
+**deleteOtherFields**   
+Returns only fields in validation object if "deleteOtherFields" value is true. Else returns all fields. Default value is true. 
   
 
 ### Available Validations
 
-&nbsp;&nbsp;&nbsp;&nbsp; required:  true : &lt;optional error message>
+**required:  true : &lt;optional error message>**  
+Value in the object must exist for given field.
 
-&nbsp;&nbsp;&nbsp;&nbsp; type: &lt;string|number|boolean|list>: &lt;optional error message>
+**type: &lt;string | number | boolean | list>: &lt;optional error message>**  
+Value in the object must be the given type.
 
-&nbsp;&nbsp;&nbsp;&nbsp; minvalue: &lt;number>: &lt;optional error message>
+**minvalue: &lt;number>: &lt;optional error message>**  
+This will be used for number data types.Field value in the object should not be lower than the specified value.
 
-&nbsp;&nbsp;&nbsp;&nbsp; maxvalue: &lt;number>: &lt;optional error message>
+**maxvalue: &lt;number>: &lt;optional error message>**  
+This will be used for number data types.Field value in the object should not be greater than the specified value.
 
-&nbsp;&nbsp;&nbsp;&nbsp; minlength: &lt;number>: &lt;optional error message>
- 
-&nbsp;&nbsp;&nbsp;&nbsp; maxlength: &lt;number>: &lt;optional error message>
+**minlength: &lt;number>: &lt;optional error message>**  
+Length of the field value in the object  should not be lower than the specified value.
 
-&nbsp;&nbsp;&nbsp;&nbsp; pattern: &lt;regex>: &lt;optional error message>
+**maxlength: &lt;number>: &lt;optional error message>**  
+Length of the field value in the object  should not be greater than the specified value.
 
-#### Example
-```sh
-var validator = require("form-validator-node")
-
-var registrationForm = {
-userName : "required: true | pattern:/^[A-Za-z0-9]*$/: Username is not in given pattern | minlength: 4 | maxlength:20 | type: string",
-password: "required: true | minlength:4 | maxlength:30 | type: string",
-age: "minvalue:13 | maxvalue:65 | type: number: Age should be a number" ,
-acceptedTerms: "type: boolean"
-}
-var registrationData = {
-userName: "username",
-password: "password",
-age: 25,
-acceptedTerms: true
-}
-
-/*In callback way:: */
-validator(registrationForm,registrationData,{},function(error, verifiedData){
-})
-/*With promises:*/
-validator(registrationForm,registrationData,{}).then(verifiedData=>{
-}).catch(validationError => {
-})
-
-```
+**pattern: &lt;regex>: &lt;optional error message>**  
+Field value must follow given pattern.

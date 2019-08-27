@@ -21,7 +21,7 @@ var loginData = {
 
 var validKeys = ["required", "minlength", "maxlength", "minvalue", "maxvalue", "pattern", "length"]
 var configuration = {
-    returnAllFields: false
+    deleteOtherFields: true
 }
 var validConstraints = {
     required: "boolean",
@@ -105,7 +105,7 @@ var CreateValidationObject = function (abstractValidationObj) {
         // abstractValidationObj[field].split("|")
         transformedObject[field] = FiledValidationGenerator(field, abstractValidationObj);
     }
-    console.log("transformedObject ", transformedObject);
+    // console.log("transformedObject ", transformedObject);
     return transformedObject;
     // console.log("transformed object ", transformedObject);
 }
@@ -169,10 +169,10 @@ var ValidationProcessor = function (validationsContainer, dataToValidate, option
         return callback(errorObject);
     }
     let returningData = {};
-    if (configuration.returnAllFields) {
-        returningData = dataToValidate;
-    } else {
+    if (configuration.deleteOtherFields) {
         returningData = TrimUnknownFields(validationObject, dataToValidate);
+    } else {
+        returningData = dataToValidate;
     }
     return callback(null, returningData);
 }
@@ -340,7 +340,7 @@ var AddKeyToObject = function(obj, keyString, value)
 // var CheckAllConstraints = function(fieldName)
 
 // Validate(loginForm, loginData, {
-//     returnAllFields: false
+//     deleteOtherFields: false
 // }, function (error, fields) {
 //     console.log(error, fields);
 // });
