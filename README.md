@@ -15,89 +15,89 @@ $ npm install form-validator-node
 
 
 A simple example showing object validation.
-```sh
-	var validator = require("form-validator-node");
+```
+var validator = require("form-validator-node");
 
-		var userInfoValidations = {
-			firstName: "type: string | required:true | minlenght:3 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
-			lastName: "type: string | minlenght:1 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
-			userName: "type: string | required:true | minlength:6 | maxlength:30 | pattern:/^[A-Za-z0-9_]*$/",
-			age: "required:true | type:number | minvalue:13 | maxvalue:70",
-		}
-		var options = {};
-		validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
-			if(validationErrors)
-			{
-				console.log(validationErrors);
-			}
-		})
+var userInfoValidations = {
+	firstName: "type: string | required:true | minlenght:3 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
+	lastName: "type: string | minlenght:1 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
+	userName: "type: string | required:true | minlength:6 | maxlength:30 | pattern:/^[A-Za-z0-9_]*$/",
+	age: "required:true | type:number | minvalue:13 | maxvalue:70",
+}
+var options = {};
+validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
+	if(validationErrors)
+	{
+		console.log(validationErrors);
+	}
+})
 	
 ```
  
 A simple express example showing login form validation.
 
- ```sh
-	var validator = require("form-validator-node");
+ ```
+var validator = require("form-validator-node");
 
-	app.post("/login",function(req,res){
-		var loginFormValidations = {
-			userName: "required:true | minlength:6 | maxlength:30",
-			password: "minlength:6 | maxlength:50"
+app.post("/login",function(req,res){
+	var loginFormValidations = {
+		userName: "required:true | minlength:6 | maxlength:30",
+		password: "minlength:6 | maxlength:50"
+	}
+	var options = {};
+	validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
+		if(validationErrors)
+		{
+			res.send(400).send(validationErrors);
 		}
-		var options = {};
-		validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
-			if(validationErrors)
-			{
-				res.send(400).send(validationErrors);
-			}
-		})
 	})
+})
 ```
 
 
 
 A simple express example showing login form validation using promises.
 
- ```sh
-	var validator = require("form-validator-node");
+ ```
+var validator = require("form-validator-node");
 
-	app.post("/login",function(req,res){
-		var loginFormValidations = {
-			userName: "required:true | minlength:6 | maxlength:30",
-			password: "minlength:6 | maxlength:50"
-		}
-		var options = {};
+app.post("/login",function(req,res){
+	var loginFormValidations = {
+		userName: "required:true | minlength:6 | maxlength:30",
+		password: "minlength:6 | maxlength:50"
+	}
+	var options = {};
 
-		validator(loginFormValidations,req.body,options).then(verifiedData=>{
-			console.log(verifiedData);
-		}).catch(validationErrorS => {
-			res.send(400).send(validationErrors);
-		})
-
+	validator(loginFormValidations,req.body,options).then(verifiedData=>{
+		console.log(verifiedData);
+	}).catch(validationErrorS => {
+		res.send(400).send(validationErrors);
 	})
+
+})
 ```
 
 
 A simple express example showing login form validation with custom error messages.
 
- ```sh
-	var validator = require("form-validator-node");
+ ```
+var validator = require("form-validator-node");
 
-	app.post("/login",function(req,res){
-		var loginFormValidations = {
-			userName: "required:true:Username is a mandatory field, Please fill out the field. | 
-			minlength:6:userName length should be atleast 6 characters. | 
-			maxlength:30:userName lenght exceeds 30 characters.",
-			password: "minlength:6 | maxlength:50"
+app.post("/login",function(req,res){
+	var loginFormValidations = {
+		userName: "required:true:Username is a mandatory field, Please fill out the field. | 
+		minlength:6:userName length should be atleast 6 characters. | 
+		maxlength:30:userName lenght exceeds 30 characters.",
+		password: "minlength:6 | maxlength:50"
+	}
+	var options = { deleteOtherFields : true };  // Options object will be explained in below sections.
+	validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
+		if(validationErrors)
+		{
+			res.send(400).send(validationErrors);
 		}
-		var options = { deleteOtherFields : true };  // Options object will be explained in below sections.
-		validator(loginFormValidations, req.body,options,function(validationErrors, verifiedData){
-			if(validationErrors)
-			{
-				res.send(400).send(validationErrors);
-			}
-		})
 	})
+})
 ```
 
 ### Options
