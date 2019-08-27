@@ -85,9 +85,9 @@ var validator = require("form-validator-node");
 
 app.post("/login",function(req,res){
 	var loginFormValidations = {
-		userName: "required:true:Username is a mandatory field, Please fill out the field. | 
+		userName: `required:true:Username is a mandatory field, Please fill out the field. | 
 		minlength:6:userName length should be atleast 6 characters. | 
-		maxlength:30:userName lenght exceeds 30 characters.",
+		maxlength:30:userName lenght exceeds 30 characters.`,
 		password: "minlength:6 | maxlength:50"
 	}
 	var options = { deleteOtherFields : true };  // Options object will be explained in below sections.
