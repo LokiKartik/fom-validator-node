@@ -15,7 +15,7 @@ $ npm install form-validator-node
 
 
 A simple example showing object validation.
-```
+```js
 var validator = require("form-validator-node");
 
 var userInfoValidations = {
@@ -36,7 +36,7 @@ validator(loginFormValidations, req.body,options,function(validationErrors, veri
  
 A simple express example showing login form validation.
 
- ```
+ ```js
 var validator = require("form-validator-node");
 
 app.post("/login",function(req,res){
@@ -58,7 +58,7 @@ app.post("/login",function(req,res){
 
 A simple express example showing login form validation using promises.
 
- ```
+ ```js
 var validator = require("form-validator-node");
 
 app.post("/login",function(req,res){
@@ -70,7 +70,7 @@ app.post("/login",function(req,res){
 
 	validator(loginFormValidations,req.body,options).then(verifiedData=>{
 		console.log(verifiedData);
-	}).catch(validationErrorS => {
+	}).catch(validationErrors => {
 		res.send(400).send(validationErrors);
 	})
 
@@ -80,7 +80,7 @@ app.post("/login",function(req,res){
 
 A simple express example showing login form validation with custom error messages.
 
- ```
+ ```js
 var validator = require("form-validator-node");
 
 app.post("/login",function(req,res){
