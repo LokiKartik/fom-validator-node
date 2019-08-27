@@ -1,7 +1,7 @@
 
 A simple [node](http://nodejs.org) module for validating request parameters and objects.
 
-This module supports custom error mesages
+This module supports custom error messages.
 
 ### Installation
 
