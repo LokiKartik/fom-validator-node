@@ -1,4 +1,4 @@
-var validator = require("./validator");
+var validator = require("./src/validator");
 
 // var registrationForm = {
 // 	userName : "required: true: Username is required | pattern:/^[A-Za-z0-9]{3,}$/: Given pattern is invalid | minlength: 4 | maxlength:20 | type: string ",
@@ -22,7 +22,7 @@ var validator = require("./validator");
 
 
 
-var validator = require("form-validator-node");
+// var validator = require("form-validator-node");
 
 var userInfoValidations = {
 	firstName: "type: string | required:true | minlength:3 | maxlength: 40 | pattern:/^[A-Za-z0-9]*$/",
@@ -35,7 +35,7 @@ var userObject = {
 	firstName: "daniel",
 	lastName: "radcliffe",
 	userName: "DanJRadcliffeNL",
-	age: 30
+	age: "30"
 }
 var options = {};
 validator(userInfoValidations, userObject,options,function(validationErrors, verifiedData){
@@ -43,4 +43,5 @@ validator(userInfoValidations, userObject,options,function(validationErrors, ver
 	{
 		console.log(validationErrors);
 	}
+	// console.log("vefified Data ", verifiedData);
 })
