@@ -15,16 +15,12 @@ var ValidateConstraints = function (validationObject) {
         for (let key in validationObject[field]) {
 
             if (validConstraints[key]) {
-                // console.log("constrint iss ", typeof validationObject[field][key]);
                 if (["minlength", "maxlength", "minvalue", "maxvalue", "length"].indexOf(key) >= 0) {
                     if (isNaN(validationObject[field][key].value)) {
                         if (!errorObj[field]) {
                             errorObj[field] = [];
                         }
-                        errorObj[field].push({
-                            key: key,
-                            message: "Invalid value " + validationObject[field][key].value
-                        })
+                        errorObj[field].push("Invalid value " + validationObject[field][key].value +" given in validation Object.")
                     }
                 }
                 if (key === 'required') {
@@ -32,10 +28,7 @@ var ValidateConstraints = function (validationObject) {
                         if (!errorObj[field]) {
                             errorObj[field] = [];
                         }
-                        errorObj[field].push({
-                            key: key,
-                            message: "Invalid value " + validationObject[field][key].value
-                        })
+                        errorObj[field].push("Invalid value " + validationObject[field][key].value+" given in validation Object.")
                     }
                 }
                 if (key === 'pattern') {
@@ -46,10 +39,7 @@ var ValidateConstraints = function (validationObject) {
                         }
                         let regex = new RegExp(validationObject[field][key].value);
                     } catch (e) {
-                        errorObj[field].push({
-                            key: key,
-                            message: "Invalid pattern " + validationObject[field][key].value
-                        })
+                        errorObj[field].push("Invalid pattern " + validationObject[field][key].value+" given in validation Object.")
                     }
                 }
 
@@ -57,10 +47,7 @@ var ValidateConstraints = function (validationObject) {
                 if (!errorObj[field]) {
                     errorObj[field] = [];
                 }
-                errorObj[field].push({
-                    key: key,
-                    message: "Invalid constraint " + key
-                })
+                errorObj[field].push("Invalid constraint " + key+" given in validation Object.")
             }
         }
     }

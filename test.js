@@ -33,9 +33,10 @@ var userInfoValidations = {
 
 var userObject = {
 	firstName: "daniel",
-	lastName: "radcliffe",
+
 	userName: "DanJRadcliffeNL",
-	age: "30"
+	age: 30,
+	f1:12
 }
 var options = {};
 validator(userInfoValidations, userObject,options,function(validationErrors, verifiedData){
@@ -43,5 +44,5 @@ validator(userInfoValidations, userObject,options,function(validationErrors, ver
 	{
 		console.log(validationErrors);
 	}
-	// console.log("vefified Data ", verifiedData);
+	console.log("vefified Data ", verifiedData);
 })
