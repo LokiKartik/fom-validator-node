@@ -13,7 +13,6 @@ var ValidateConstraints = function (validationObject) {
     let errorObj = {};
     for (let field in validationObject) {
         for (let key in validationObject[field]) {
-
             if (validConstraints[key]) {
                 if (["minlength", "maxlength", "minvalue", "maxvalue", "length"].indexOf(key) >= 0) {
                     if (isNaN(validationObject[field][key].value)) {
