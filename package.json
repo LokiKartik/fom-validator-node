@@ -11,6 +11,9 @@
     "url": "git+https://github.com/LokiKartik/fom-validator-node"
   },
   "keywords": [
+    "form-validator-node",
+    "node-input-validator",
+    "node-form-validator",
     "node-validator",
     "form-validator",
     "object-validator",
